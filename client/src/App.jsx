@@ -5,7 +5,7 @@ import ProfilePage from './pages/ProfilePage';
 import { Toaster } from 'react-hot-toast';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
-import bgImage from './assets/bgImage.svg'; // imported image
+import bgImage from '/bgImage.svg'; // imported image
 
 const App = () => {
   const { authUser, isLoading } = useContext(AuthContext); // assuming you can track loading
