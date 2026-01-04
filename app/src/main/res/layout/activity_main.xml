@@ -61,22 +61,19 @@
             android:layout_width="32dp"
             android:layout_height="42dp"
             android:layout_weight="1"
-            android:src="@drawable/camera"
-            android:contentDescription="@string/camera" />
+            android:src="@drawable/camera" />
 
         <ImageView
             android:layout_width="32dp"
             android:layout_height="42dp"
             android:layout_weight="1"
-            android:src="@drawable/chat"
-            android:contentDescription="@string/chat" />
+            android:src="@drawable/chat" />
 
         <ImageView
             android:layout_width="32dp"
             android:layout_height="42dp"
             android:layout_weight="1"
-            android:src="@drawable/sett"
-            android:contentDescription="@string/settings" />
+            android:src="@drawable/sett" />
 
     </LinearLayout>
 
