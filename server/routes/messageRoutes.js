@@ -1,0 +1,14 @@
+import express from "express";
+import { protectRoute } from "../middleware/auth.js";
+import { get } from "mongoose";
+import { getMessages, getUserForSidebar, markMessagesAsSeen, sendMessage } from "../controllers/message.controller.js";
+
+export const messageRouter = express.Router();
+
+messageRouter.get("/users", protectRoute, getUserForSidebar);
+messageRouter.get("/:id", protectRoute, getMessages);
+messageRouter.put("/mark/:id", protectRoute, markMessagesAsSeen);
+messageRouter.post("/send/:id", protectRoute, sendMessage)
+
+export default messageRouter;
+
