@@ -30,7 +30,8 @@
         <ImageView
             android:layout_width="@dimen/_28sdp"
             android:layout_height="@dimen/_28sdp"
-            android:src="@drawable/logout" />
+            android:src="@drawable/logout"
+            android:contentDescription="logout button"/>
 
     </LinearLayout>
 
@@ -61,19 +62,22 @@
             android:layout_width="32dp"
             android:layout_height="42dp"
             android:layout_weight="1"
-            android:src="@drawable/camera" />
+            android:src="@drawable/camera"
+            android:contentDescription="camera"/>
 
         <ImageView
             android:layout_width="32dp"
             android:layout_height="42dp"
             android:layout_weight="1"
-            android:src="@drawable/chat" />
+            android:src="@drawable/chat"
+            android:contentDescription="chat"/>
 
         <ImageView
             android:layout_width="32dp"
             android:layout_height="42dp"
             android:layout_weight="1"
-            android:src="@drawable/sett" />
+            android:src="@drawable/sett"
+            android:contentDescription="setting"/>
 
     </LinearLayout>
 
