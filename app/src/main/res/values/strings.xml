@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">chatapp</string>
+    <string name="camera">Camera</string>
+    <string name="chat">Chat</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+
+</resources>
