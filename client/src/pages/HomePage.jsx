@@ -1,29 +1,47 @@
-import React, { useContext } from 'react';
-import Sidebar from '../components/Sidebar';
-import ChatContainer from '../components/ChatContainer';
-import RightSidebar from '../components/RightSidebar';
-import { ChatContext } from '../../context/ChatContext';
+import { lazy, Suspense } from "react";
+import ConversationList from "../components/ConversationList";
+import ChatWindow from "../components/ChatWindow";
+import { useConversationStore } from "../store/useConversationStore";
+import { useUIStore } from "../store/useUIStore";
+
+const InfoPanel = lazy(() => import("../components/InfoPanel"));
+const NewConversationModal = lazy(() => import("../components/NewConversationModal"));
+const SearchOverlay = lazy(() => import("../components/SearchOverlay"));
 
 const HomePage = () => {
-  const { selectedUser } = useContext(ChatContext);
+  const selectedConversation = useConversationStore((s) => s.selectedConversation);
+  const isInfoPanelOpen = useUIStore((s) => s.isInfoPanelOpen);
+  const isNewConversationOpen = useUIStore((s) => s.isNewConversationOpen);
+  const isSearchOverlayOpen = useUIStore((s) => s.isSearchOverlayOpen);
 
   return (
-    <div className="min-h-screen w-full flex bg-gray-900 text-white">
-      {/* Left Sidebar */}
-      <div className={`h-screen ${selectedUser ? 'hidden md:flex' : 'flex'} flex-shrink-0`}>
-        <Sidebar />
+    <div className="h-screen w-full flex overflow-hidden">
+      <div className={`w-full md:w-[380px] shrink-0 border-r border-[var(--color-border)] ${selectedConversation ? "hidden md:block" : ""}`}>
+        <ConversationList />
       </div>
 
-      {/* Chat Container */}
-      <div className="flex-1 h-screen overflow-y-auto">
-        <ChatContainer />
+      <div className={`flex-1 min-w-0 ${selectedConversation ? "" : "hidden md:block"}`}>
+        <ChatWindow />
       </div>
 
-      {/* Right Sidebar */}
-      {selectedUser && (
-        <div className="h-screen hidden md:flex flex-shrink-0">
-          <RightSidebar />
+      {selectedConversation && isInfoPanelOpen && (
+        <div className="hidden lg:block w-[320px] shrink-0 border-l border-[var(--color-border)]">
+          <Suspense fallback={null}>
+            <InfoPanel />
+          </Suspense>
         </div>
+      )}
+
+      {isNewConversationOpen && (
+        <Suspense fallback={null}>
+          <NewConversationModal />
+        </Suspense>
+      )}
+
+      {isSearchOverlayOpen && (
+        <Suspense fallback={null}>
+          <SearchOverlay />
+        </Suspense>
       )}
     </div>
   );

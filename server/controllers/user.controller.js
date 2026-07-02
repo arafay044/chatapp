@@ -8,8 +8,11 @@ import bcrypt from "bcryptjs";
 export const signup = async(req, res) => {
     const { fullName, email, password, bio } = req.body;
     try {
-        if(!fullName || !email || !password || !bio) {
+        if(!fullName || !email || !password) {
             return res.status(400).json({ success: false , message: "All fields are required" });
+        }
+        if (password.length < 6) {
+            return res.status(400).json({ success: false, message: "Password must be at least 6 characters" });
         }
         // check if user already exists
         const user = await User.findOne({email});
@@ -25,7 +28,7 @@ export const signup = async(req, res) => {
             fullName,
             email,
             password: hashedPassword,
-            bio
+            bio: bio || "Hey there! I'm using Pulse.",
         });
         const token = generateToken(newUser._id);
         res.json({ success: true, userData: newUser, message: "User created successfully", token });
@@ -44,6 +47,9 @@ export const login = async(req, res) => {
             return res.status(400).json({ success: false , message: "All fields are required" });
         }
         const userData = await User.findOne({ email });
+        if (!userData) {
+            return res.status(400).json({ success: false , message: "Invalid credentials" });
+        }
         const isPasswordValid = await bcrypt.compare(password, userData.password);
         if(!isPasswordValid) {
             return res.status(400).json({ success: false , message: "Invalid credentials" });
@@ -59,6 +65,27 @@ export const login = async(req, res) => {
 // controller to check is user is authenticated
 export const checkAuth = async(req, res) => {
     res.json({ success: true, user: req.user });
+}
+
+// search users by name/username/email to start a new conversation
+export const searchUsers = async (req, res) => {
+    try {
+        const { q } = req.query;
+        if (!q || q.trim().length === 0) {
+            return res.json({ success: true, users: [] });
+        }
+        const regex = new RegExp(q.trim(), "i");
+        const users = await User.find({
+            _id: { $ne: req.user._id },
+            $or: [{ fullName: regex }, { username: regex }, { email: regex }],
+        })
+            .select("-password -pushSubscription")
+            .limit(20);
+        res.json({ success: true, users });
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error.message });
+    }
 }
 
 // controller to update user profile details

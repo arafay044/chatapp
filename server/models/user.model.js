@@ -11,6 +11,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    username: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      lowercase: true,
+    },
     password: {
       type: String,
       required: true,
@@ -22,6 +29,15 @@ const userSchema = new Schema(
     },
     bio: {
       type: String,
+      default: "Hey there! I'm using Pulse.",
+    },
+    lastSeen: {
+      type: Date,
+      default: Date.now,
+    },
+    pushSubscription: {
+      type: Object,
+      default: null,
     },
   },
   { timestamps: true }
